@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg text-text font-body antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-bg;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-light;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-text text-bg text-[13px] font-medium tracking-[0.06em] uppercase py-3 px-8 rounded-sm
+           transition-all duration-300 font-body
+           hover:bg-accent hover:-translate-y-px;
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .btn-outline {
+    @apply border border-border-dark text-text text-[13px] font-medium tracking-[0.06em] uppercase py-3 px-8 rounded-sm
+           transition-all duration-300 font-body
+           hover:border-accent hover:text-accent hover:-translate-y-px;
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .btn-ghost {
+    @apply text-text border-b border-text pb-1 text-[13px] font-medium tracking-[0.06em] uppercase
+           transition-all duration-300 font-body
+           hover:text-accent hover:border-accent;
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .btn-accent {
+    @apply bg-accent text-white text-[13px] font-medium tracking-[0.06em] uppercase py-3 px-8 rounded-sm
+           transition-all duration-300 font-body
+           hover:bg-accent-dark hover:-translate-y-px;
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+}
