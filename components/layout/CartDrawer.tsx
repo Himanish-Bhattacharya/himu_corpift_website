@@ -62,7 +62,7 @@ export default function CartDrawer() {
               </div>
 
               {/* Body */}
-              <div className="flex-1 overflow-y-auto">
+              <div className="flex-1 overflow-y-auto" data-lenis-prevent>
                 {items.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full gap-4 px-8 text-center">
                     <ShoppingBag size={48} className="text-text opacity-20" strokeWidth={1} />

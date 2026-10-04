@@ -1,7 +1,13 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ChevronRight, ArrowRight, ListChecks, Gift, Truck } from 'lucide-react';
 import SectionLabel from '@/components/shared/SectionLabel';
 import RevealOnScroll from '@/components/shared/RevealOnScroll';
+
+export const metadata: Metadata = {
+  title: 'Services',
+  description: 'Customised hampers, handcrafted gifts and scheduled gifting for teams and clients across India.',
+};
 
 const SERVICES = [
   {
@@ -62,7 +68,7 @@ export default function ServicesPage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <RevealOnScroll>
             <div className="flex items-center gap-3 mb-10">
-              <span className="text-[11px] font-medium tracking-[0.14em] uppercase font-body text-accent">Featured Service</span>
+              <span className="text-[11px] font-medium tracking-[0.14em] uppercase font-body text-accent-light">Featured Service</span>
               <div className="h-px w-8 bg-accent/40" />
             </div>
 
@@ -71,14 +77,14 @@ export default function ServicesPage() {
                 <h2 className="font-display text-display-sm text-bg leading-tight mb-5">
                   Scheduled Gifting
                 </h2>
-                <p className="text-[15px] font-body text-muted leading-relaxed mb-6">
+                <p className="text-[15px] font-body text-muted-dark leading-relaxed mb-6">
                   Share your employee or client list with their special dates — birthdays, anniversaries, celebrations. We curate the perfect hamper for each person and deliver it the day before, every time.
                 </p>
                 <div className="flex items-baseline gap-2 mb-8">
-                  <span className="font-display text-display-sm text-accent leading-none">Rs. 15</span>
-                  <span className="text-[13px] font-body text-muted">per person, onwards</span>
+                  <span className="font-display text-display-sm text-accent-light leading-none">Rs. 15</span>
+                  <span className="text-[13px] font-body text-muted-dark">per person, onwards</span>
                 </div>
-                <Link href="/contact" className="group btn-accent flex items-center gap-2 w-fit">
+                <Link href="/contact" className="group btn-light flex items-center gap-2 w-fit">
                   Get Started
                   <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
                 </Link>
@@ -91,13 +97,13 @@ export default function ServicesPage() {
                   { icon: Truck,      title: 'Delivered on time', desc: 'Every gift arrives the day before — no reminders needed from you.' },
                 ].map((step, i) => (
                   <RevealOnScroll key={step.title} delay={i * 0.08}>
-                    <div className="flex items-start gap-4 bg-[#1F3A2E] border border-border-dark rounded-sm p-5">
+                    <div className="flex items-start gap-4 bg-bg-dark-2 border border-border-dark rounded-sm p-5">
                       <div className="w-9 h-9 rounded-sm bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <step.icon size={16} className="text-accent" />
+                        <step.icon size={16} className="text-accent-light" />
                       </div>
                       <div>
                         <h3 className="font-display text-heading-sm text-bg mb-1">{step.title}</h3>
-                        <p className="text-[13px] font-body text-muted leading-relaxed">{step.desc}</p>
+                        <p className="text-[13px] font-body text-muted-dark leading-relaxed">{step.desc}</p>
                       </div>
                     </div>
                   </RevealOnScroll>
@@ -160,7 +166,7 @@ export default function ServicesPage() {
             <h2 className="font-display italic text-display-md text-bg mb-8">
               Let&apos;s create something memorable
             </h2>
-            <Link href="/contact" className="group btn-accent flex items-center gap-2 mx-auto w-fit">
+            <Link href="/contact" className="group btn-light flex items-center gap-2 mx-auto w-fit">
               Talk to Us
               <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </Link>

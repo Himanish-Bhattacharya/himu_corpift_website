@@ -4,14 +4,15 @@ import { cn } from '@/lib/utils';
 import { CATEGORIES } from '@/data/products';
 
 interface FilterBarProps {
+  categories?: { slug: string; label: string }[];
   active: string;
   onChange: (slug: string) => void;
 }
 
 const ALL_TAB = { slug: 'all', label: 'All' };
 
-export default function FilterBar({ active, onChange }: FilterBarProps) {
-  const tabs = [ALL_TAB, ...CATEGORIES];
+export default function FilterBar({ categories = CATEGORIES, active, onChange }: FilterBarProps) {
+  const tabs = [ALL_TAB, ...categories];
 
   return (
     <div className="sticky top-[72px] z-40 bg-bg border-b border-border">

@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/layout/CartDrawer';
 import PageTransition from '@/components/shared/PageTransition';
+import SmoothScroll from '@/components/shared/SmoothScroll';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -22,7 +23,10 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
-  title: 'Corpift — Premium Corporate Gifting from Jaipur',
+  title: {
+    default: 'Corpift — Premium Corporate Gifting from Jaipur',
+    template: '%s | Corpift',
+  },
   description:
     'Handcrafted, eco-friendly corporate gift hampers curated for businesses. Sustainable gifting solutions from Jaipur, India.',
   keywords: ['corporate gifts', 'Jaipur', 'handcrafted', 'eco-friendly', 'bulk corporate orders', 'gift hampers'],
@@ -43,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
 
+        <SmoothScroll />
         <Header />
         <CartDrawer />
 

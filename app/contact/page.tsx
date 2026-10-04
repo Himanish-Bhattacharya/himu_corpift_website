@@ -170,8 +170,8 @@ export default function ContactPage() {
               <div className="bg-bg-card border border-border rounded-sm p-8 md:p-10">
                 {submitted ? (
                   <div className="flex flex-col items-center justify-center py-16 text-center gap-5">
-                    <div className="w-14 h-14 rounded-full bg-green-50 flex items-center justify-center">
-                      <CheckCircle2 className="text-green-600" size={28} />
+                    <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center">
+                      <CheckCircle2 className="text-accent" size={28} />
                     </div>
                     <div>
                       <h3 className="font-display text-heading-sm text-text mb-2">Message Sent!</h3>

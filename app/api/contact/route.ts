@@ -1,10 +1,20 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
+const escapeHtml = (value: unknown) =>
+  String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { name, company, email, phone, message, cartItems, isInquiry } = body;
+    const h = {
+      name: escapeHtml(name),
+      company: escapeHtml(company),
+      email: escapeHtml(email),
+      phone: escapeHtml(phone),
+      message: escapeHtml(message).replace(/\n/g, '<br>'),
+    };
 
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
@@ -22,7 +32,7 @@ export async function POST(request: Request) {
       const rows = cartItems
         .map(
           (item: { name: string; quantity: number; price: number }) =>
-            `  • ${item.name} × ${item.quantity} = Rs. ${(item.price * item.quantity).toLocaleString('en-IN')}`
+            `  • ${item.name} × ${Number(item.quantity)} = Rs. ${(item.price * item.quantity).toLocaleString('en-IN')}`
         )
         .join('\n');
       const total = cartItems.reduce(
@@ -48,43 +58,43 @@ export async function POST(request: Request) {
       .join('\n');
 
     const html = `
-      <div style="font-family: Georgia, serif; max-width: 600px; color: #162318;">
-        <div style="background: #1C3028; padding: 32px 40px; margin-bottom: 32px;">
-          <h1 style="color: #3A9A87; font-size: 28px; margin: 0; letter-spacing: 0.06em;">
-            CORP<span style="color: #72C4B6;">IFT</span>
+      <div style="font-family: Georgia, serif; max-width: 600px; color: #16130F;">
+        <div style="background: #14251E; padding: 32px 40px; margin-bottom: 32px;">
+          <h1 style="color: #9C7741; font-size: 28px; margin: 0; letter-spacing: 0.06em;">
+            CORP<span style="color: #CDAE7A;">IFT</span>
           </h1>
-          <p style="color: #8AAE96; font-family: system-ui, sans-serif; font-size: 13px; margin: 8px 0 0;">
-            ${subject}
+          <p style="color: #A8B4AB; font-family: system-ui, sans-serif; font-size: 13px; margin: 8px 0 0;">
+            ${escapeHtml(subject)}
           </p>
         </div>
 
         <div style="padding: 0 40px 32px;">
           <table style="width: 100%; border-collapse: collapse; font-family: system-ui, sans-serif; font-size: 14px;">
-            <tr><td style="padding: 8px 0; color: #527A60; width: 100px;">Name</td><td style="padding: 8px 0; font-weight: 500;">${name}</td></tr>
-            <tr><td style="padding: 8px 0; color: #527A60;">Company</td><td style="padding: 8px 0; font-weight: 500;">${company}</td></tr>
-            <tr><td style="padding: 8px 0; color: #527A60;">Email</td><td style="padding: 8px 0;"><a href="mailto:${email}" style="color: #3A9A87;">${email}</a></td></tr>
-            <tr><td style="padding: 8px 0; color: #527A60;">Phone</td><td style="padding: 8px 0;"><a href="tel:${phone}" style="color: #3A9A87;">${phone}</a></td></tr>
-            ${message ? `<tr><td style="padding: 8px 0; color: #527A60; vertical-align: top;">Message</td><td style="padding: 8px 0;">${message}</td></tr>` : ''}
+            <tr><td style="padding: 8px 0; color: #5F584E; width: 100px;">Name</td><td style="padding: 8px 0; font-weight: 500;">${h.name}</td></tr>
+            <tr><td style="padding: 8px 0; color: #5F584E;">Company</td><td style="padding: 8px 0; font-weight: 500;">${h.company}</td></tr>
+            <tr><td style="padding: 8px 0; color: #5F584E;">Email</td><td style="padding: 8px 0;"><a href="mailto:${h.email}" style="color: #9C7741;">${h.email}</a></td></tr>
+            <tr><td style="padding: 8px 0; color: #5F584E;">Phone</td><td style="padding: 8px 0;"><a href="tel:${h.phone}" style="color: #9C7741;">${h.phone}</a></td></tr>
+            ${message ? `<tr><td style="padding: 8px 0; color: #5F584E; vertical-align: top;">Message</td><td style="padding: 8px 0;">${h.message}</td></tr>` : ''}
           </table>
 
           ${
             isInquiry && Array.isArray(cartItems) && cartItems.length > 0
               ? `
-          <div style="margin-top: 32px; padding: 24px; background: #C1E1C1; border-radius: 2px;">
-            <p style="font-family: system-ui, sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #3A9A87; margin: 0 0 16px;">Inquiry Items</p>
+          <div style="margin-top: 32px; padding: 24px; background: #EDE6D9; border-radius: 2px;">
+            <p style="font-family: system-ui, sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #9C7741; margin: 0 0 16px;">Inquiry Items</p>
             <table style="width: 100%; font-family: system-ui, sans-serif; font-size: 14px;">
               ${cartItems
                 .map(
                   (item: { name: string; quantity: number; price: number }) => `
               <tr>
-                <td style="padding: 6px 0; color: #162318;">${item.name} × ${item.quantity}</td>
-                <td style="padding: 6px 0; text-align: right; color: #3A9A87; font-weight: 500;">Rs. ${(item.price * item.quantity).toLocaleString('en-IN')}</td>
+                <td style="padding: 6px 0; color: #16130F;">${escapeHtml(item.name)} × ${Number(item.quantity)}</td>
+                <td style="padding: 6px 0; text-align: right; color: #9C7741; font-weight: 500;">Rs. ${(item.price * item.quantity).toLocaleString('en-IN')}</td>
               </tr>`
                 )
                 .join('')}
-              <tr style="border-top: 1px solid #B5D8B8;">
+              <tr style="border-top: 1px solid #E2D9C9;">
                 <td style="padding: 12px 0 0; font-weight: 600;">Estimated Total</td>
-                <td style="padding: 12px 0 0; text-align: right; color: #3A9A87; font-weight: 700; font-size: 16px;">
+                <td style="padding: 12px 0 0; text-align: right; color: #9C7741; font-weight: 700; font-size: 16px;">
                   Rs. ${cartItems.reduce((s: number, i: { price: number; quantity: number }) => s + i.price * i.quantity, 0).toLocaleString('en-IN')}
                 </td>
               </tr>
@@ -94,8 +104,8 @@ export async function POST(request: Request) {
           }
         </div>
 
-        <div style="padding: 24px 40px; background: #F5FBF5; border-top: 1px solid #B5D8B8; font-family: system-ui, sans-serif; font-size: 12px; color: #8AAE96;">
-          Reply directly to this email to respond to ${name}.
+        <div style="padding: 24px 40px; background: #F7F3EC; border-top: 1px solid #E2D9C9; font-family: system-ui, sans-serif; font-size: 12px; color: #A8B4AB;">
+          Reply directly to this email to respond to ${h.name}.
         </div>
       </div>
     `;

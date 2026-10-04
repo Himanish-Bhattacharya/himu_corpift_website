@@ -104,6 +104,7 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 8 }}
         transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+        data-lenis-prevent
         className="relative bg-bg-card w-full max-w-lg rounded-sm shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
       >
         {/* Close */}
@@ -124,8 +125,8 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
               transition={{ duration: 0.4 }}
               className="flex flex-col items-center justify-center text-center p-16 gap-5"
             >
-              <div className="w-14 h-14 rounded-full bg-green-50 flex items-center justify-center">
-                <CheckCircle2 className="text-green-600" size={28} />
+              <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center">
+                <CheckCircle2 className="text-accent" size={28} />
               </div>
               <div>
                 <h3 className="font-display text-heading-sm text-text mb-2">

@@ -1,185 +1,164 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import SectionLabel from '@/components/shared/SectionLabel';
+import { gsap, useGSAP, prefersReducedMotion } from '@/lib/gsap';
+import { cn } from '@/lib/utils';
 
 const SLIDES = [
-  { src: '/images/hero/slide-1.jpg', alt: 'Premium corporate gift hamper' },
-  { src: '/images/hero/slide-2.jpg', alt: 'Handcrafted Jaipur gifts' },
-  { src: '/images/hero/slide-3.jpg', alt: 'Festive gift collection' },
-  { src: '/images/hero/slide-4.jpg', alt: 'Artisan corporate gifts' },
+  { src: '/images/hero/slide-3.jpg', alt: 'Curated corporate gift boxes with watch, diary and accessories' },
+  { src: '/images/hero/slide-4.jpg', alt: 'Wrapped corporate gift and leather diary on a boardroom table' },
+  { src: '/images/hero/slide-1.jpg', alt: 'Branded gift boxes in soft sage and ivory' },
 ];
 
-const INTERVAL = 4000;
-
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
-};
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] } },
-};
+const INTERVAL = 6000;
 
 export default function Hero() {
+  const root = useRef<HTMLElement>(null);
   const [current, setCurrent] = useState(0);
-  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    if (paused) return;
     const id = setInterval(() => setCurrent((c) => (c + 1) % SLIDES.length), INTERVAL);
     return () => clearInterval(id);
-  }, [paused]);
+  }, []);
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+
+      // Intro: headline lines rise out of their masks, then the supporting copy
+      gsap
+        .timeline({ defaults: { ease: 'power4.out' } })
+        .from('[data-hero-line]', { yPercent: 110, duration: 1.3, stagger: 0.12, delay: 0.15 })
+        .from('[data-hero-fade]', { autoAlpha: 0, y: 18, duration: 0.9, stagger: 0.1 }, '-=0.8')
+        .from('[data-hero-rule]', { scaleX: 0, transformOrigin: 'left', duration: 1.2 }, '<');
+
+      // Scroll: image drifts slower than the page, copy lifts and fades
+      gsap.to('[data-hero-media]', {
+        yPercent: 14,
+        ease: 'none',
+        scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true },
+      });
+      gsap.to('[data-hero-content]', {
+        yPercent: -18,
+        autoAlpha: 0,
+        ease: 'none',
+        scrollTrigger: { trigger: root.current, start: 'top top', end: '70% top', scrub: true },
+      });
+    },
+    { scope: root }
+  );
 
   return (
-    <section className="relative min-h-screen bg-bg overflow-hidden">
-
-      {/* ── CAROUSEL ──
-           Mobile:   absolute inset-0 (fills whole viewport behind text)
-           Desktop:  absolute right panel covering left-[45%] to right edge  */}
-      <div
-        className="absolute inset-0 md:inset-y-0 md:left-[45%] md:right-0 md:left-auto"
-        style={{ left: 0 }}
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
-        {/* override left:0 on desktop via inline style trick — use a wrapper instead */}
-      </div>
-
-      {/* Cleaner: separate absolute divs per breakpoint via a single responsive div */}
-      <div
-        className="absolute inset-0 md:left-[45%]"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
-        {/* Slides */}
-        <AnimatePresence mode="sync">
-          <motion.div
-            key={current}
-            initial={{ opacity: 0, scale: 1.04 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="absolute inset-0"
+    <section ref={root} className="relative h-[100svh] min-h-[620px] bg-bg-dark overflow-hidden text-bg">
+      {/* Slides */}
+      <div data-hero-media className="absolute inset-0 -top-[8%] h-[116%]">
+        {SLIDES.map((slide, i) => (
+          <div
+            key={slide.src}
+            className={cn(
+              'absolute inset-0 transition-opacity duration-[1600ms] ease-in-out',
+              i === current ? 'opacity-100' : 'opacity-0'
+            )}
           >
             <Image
-              src={SLIDES[current].src}
-              alt={SLIDES[current].alt}
+              src={slide.src}
+              alt={slide.alt}
               fill
-              className="object-cover"
-              priority={current === 0}
+              sizes="100vw"
+              priority={i === 0}
+              className={cn(
+                'object-cover transition-transform duration-[7000ms] ease-out',
+                i === current ? 'scale-100' : 'scale-[1.08]'
+              )}
             />
-          </motion.div>
-        </AnimatePresence>
+          </div>
+        ))}
+      </div>
 
-        {/* Mobile: strong bottom-up gradient so text is readable */}
-        <div className="md:hidden absolute inset-0 bg-gradient-to-t from-bg-dark/95 via-bg-dark/55 to-bg-dark/5 z-10 pointer-events-none" />
+      {/* Scrims — guarantee legible text over any photo */}
+      <div className="absolute inset-0 bg-bg-dark/35" />
+      <div className="absolute inset-0 bg-gradient-to-t from-bg-dark via-bg-dark/50 to-bg-dark/10 md:bg-gradient-to-r md:from-bg-dark/90 md:via-bg-dark/45 md:to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-bg-dark/60 to-transparent" />
 
-        {/* Desktop: subtle left-edge blend into text panel */}
-        <div className="hidden md:block absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-bg to-transparent z-10 pointer-events-none" />
+      {/* Copy */}
+      <div
+        data-hero-content
+        className="relative z-10 h-full max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 flex flex-col justify-end pb-24 md:pb-28"
+      >
+        <p data-hero-fade className="flex items-center gap-3 text-[11px] font-medium tracking-[0.2em] uppercase font-body text-accent-light mb-6 md:mb-8">
+          <span data-hero-rule className="block w-10 h-px bg-accent-light" />
+          Corporate gifting · Since 2022
+        </p>
 
-        {/* Slide counter — top right, desktop only */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.8 }}
-          className="hidden md:block absolute top-6 right-6 z-20"
-        >
-          <span className="font-body text-[12px] text-white/70 tracking-[0.14em]">
-            {String(current + 1).padStart(2, '0')} / {String(SLIDES.length).padStart(2, '0')}
+        <h1 className="font-display font-light text-[clamp(48px,8.4vw,124px)] leading-[0.98] tracking-[-0.02em] mb-8 md:mb-10">
+          <span className="block overflow-hidden pb-[0.06em]">
+            <span data-hero-line className="block">Corporate gifts,</span>
           </span>
-        </motion.div>
+          <span className="block overflow-hidden pb-[0.06em]">
+            <span data-hero-line className="block">
+              <em className="italic text-accent-light">crafted</em> in Jaipur.
+            </span>
+          </span>
+        </h1>
 
-        {/* Dot indicators
-            Mobile: top-left (above text overlay)
-            Desktop: bottom-left */}
-        <div className="hidden md:flex absolute md:bottom-7 md:left-8 z-20 items-center gap-[10px]">
-          {SLIDES.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => { setCurrent(i); setPaused(true); }}
-              aria-label={`Go to slide ${i + 1}`}
-            >
-              <span
-                className={`block rounded-full transition-all duration-500 ${
-                  i === current
-                    ? 'w-7 h-[3px] bg-white'
-                    : 'w-[6px] h-[6px] bg-white/40 hover:bg-white/70'
-                }`}
-              />
-            </button>
-          ))}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-10">
+          <div>
+            <p data-hero-fade className="max-w-md text-[15px] md:text-[16px] text-bg/80 font-body leading-relaxed mb-9">
+              Handcrafted, sustainable gift hampers for teams and clients — curated, branded and delivered across India.
+            </p>
+            <div data-hero-fade className="flex flex-wrap items-center gap-x-8 gap-y-5">
+              <Link href="/shop" className="group btn-light inline-flex items-center gap-2">
+                Explore Gifts
+                <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform duration-200" />
+              </Link>
+              <Link
+                href="/contact"
+                className="group inline-flex items-center gap-2 text-[13px] font-medium tracking-[0.06em] uppercase font-body text-bg border-b border-bg/60 pb-1 hover:text-accent-light hover:border-accent-light transition-colors"
+              >
+                Request a Quote
+                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Slide progress */}
+          <div data-hero-fade className="hidden md:flex items-center gap-4">
+            <span className="font-body text-[12px] tracking-[0.14em] text-bg/70 tabular-nums">
+              {String(current + 1).padStart(2, '0')}
+            </span>
+            <div className="flex gap-2">
+              {SLIDES.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrent(i)}
+                  aria-label={`Show image ${i + 1}`}
+                  className="relative w-12 h-px bg-bg/25 overflow-hidden"
+                >
+                  <span
+                    key={`${i}-${current}`}
+                    className={cn(
+                      'absolute inset-y-0 left-0 bg-bg',
+                      i === current ? 'w-full' : i < current ? 'w-full' : 'w-0'
+                    )}
+                    style={i === current ? { animation: `heroProgress ${INTERVAL}ms linear` } : undefined}
+                  />
+                </button>
+              ))}
+            </div>
+            <span className="font-body text-[12px] tracking-[0.14em] text-bg/40 tabular-nums">
+              {String(SLIDES.length).padStart(2, '0')}
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* ── TEXT PANEL ──
-           Mobile:   sits in normal flow, justify-end pushes text to bottom, z-20 over gradient
-           Desktop:  left 45% of the section, light background, centered  */}
-      <div className="relative z-20 flex flex-col justify-end md:justify-center md:w-[45%] min-h-screen pl-5 md:pl-8 lg:pl-12 xl:pl-20 pr-6 md:pr-10 lg:pr-16 pb-16 pt-32 md:pt-0 md:pb-0">
-
-        <motion.div variants={container} initial="hidden" animate="show">
-
-          <motion.div variants={item} className="mb-6">
-            <SectionLabel>Welcome to Corpift</SectionLabel>
-          </motion.div>
-
-          {/* Mobile: white text over dark image. Desktop: dark text on light bg */}
-          <h1 className="font-display font-light text-display-lg text-bg md:text-text leading-[0.95] -tracking-[0.02em] mb-8">
-            <motion.span variants={item} className="block">Premium</motion.span>
-            <motion.span variants={item} className="block">
-              <em className="text-accent not-italic">Corporate</em> Gifts
-            </motion.span>
-            <motion.span variants={item} className="block">From Jaipur.</motion.span>
-          </h1>
-
-          <motion.p
-            variants={item}
-            className="max-w-md text-[16px] text-bg/75 md:text-muted font-body leading-relaxed mb-10"
-          >
-            Handcrafted, eco-friendly gift hampers curated for discerning businesses.
-            From bulk corporate orders to bespoke festival collections — we make every gifting moment memorable.
-          </motion.p>
-
-          <motion.div variants={item} className="flex flex-col sm:flex-row items-start gap-4">
-
-            {/* Primary CTA: accent/gold on mobile (visible over dark image), dark on desktop */}
-            <Link
-              href="/shop"
-              className="group inline-flex items-center gap-2 text-[13px] font-medium tracking-[0.06em] uppercase font-body py-3 px-8 rounded-sm transition-all duration-300 bg-accent text-white hover:bg-accent-dark md:bg-text md:text-bg md:hover:bg-accent md:-translate-y-0 hover:-translate-y-px"
-            >
-              Explore Gifts
-              <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform duration-200" />
-            </Link>
-
-            {/* Ghost CTA: white border/text on mobile, standard on desktop */}
-            <Link
-              href="/about"
-              className="group inline-flex items-center gap-2 text-[13px] font-medium tracking-[0.06em] uppercase font-body border-b pb-px transition-colors duration-200 text-bg border-bg md:text-text md:border-text hover:text-accent hover:border-accent"
-            >
-              Our Story
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
-            </Link>
-
-          </motion.div>
-        </motion.div>
-
-        {/* Scroll indicator — desktop only */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4, duration: 0.8 }}
-          className="hidden md:flex absolute bottom-10 left-5 md:left-8 lg:left-12 xl:left-20 items-center gap-3"
-        >
-          <div className="w-px h-12 bg-border" />
-          <span className="text-[11px] font-body text-light tracking-[0.1em] uppercase">Scroll to explore</span>
-        </motion.div>
-
+      {/* Scroll cue */}
+      <div className="absolute bottom-7 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2">
+        <span className="block w-px h-10 bg-gradient-to-b from-transparent to-bg/60 animate-pulse" />
       </div>
-
     </section>
   );
 }

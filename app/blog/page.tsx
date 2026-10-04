@@ -1,9 +1,15 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronRight, ArrowRight } from 'lucide-react';
 import SectionLabel from '@/components/shared/SectionLabel';
 import RevealOnScroll from '@/components/shared/RevealOnScroll';
 import { getPosts, formatBlogDate } from '@/data/blog';
+
+export const metadata: Metadata = {
+  title: 'Blog',
+  description: 'Ideas and guides on thoughtful corporate gifting from the Corpift team.',
+};
 
 export default async function BlogPage() {
   const posts = await getPosts();

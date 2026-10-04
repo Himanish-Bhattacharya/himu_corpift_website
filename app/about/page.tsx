@@ -1,8 +1,14 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronRight, Package, Hand, Star, ArrowUpRight } from 'lucide-react';
 import SectionLabel from '@/components/shared/SectionLabel';
 import RevealOnScroll from '@/components/shared/RevealOnScroll';
+
+export const metadata: Metadata = {
+  title: 'About',
+  description: 'The story behind Corpift — handcrafted corporate gifts from Jaipur, founded by Himanish Bhattacharya.',
+};
 
 const STATS = [
   { value: '15',   label: 'Experts' },

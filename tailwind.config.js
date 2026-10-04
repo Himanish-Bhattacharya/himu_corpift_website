@@ -8,18 +8,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        bg:             '#F5FBF5',
-        'bg-alt':       '#C1E1C1',
-        'bg-dark':      '#1C3028',
-        'bg-card':      '#FFFFFF',
-        text:           '#162318',
-        muted:          '#527A60',
-        light:          '#8AAE96',
-        accent:         '#3A9A87',
-        'accent-dark':  '#2D8070',
-        'accent-light': '#72C4B6',
-        border:         '#B5D8B8',
-        'border-dark':  '#2A4238',
+        // Forest + brass palette
+        bg:             '#F7F3EC', // warm ivory
+        'bg-alt':       '#EDE6D9', // sand
+        'bg-dark':      '#14251E', // deep forest
+        'bg-dark-2':    '#1B3128', // raised surface on forest
+        'bg-card':      '#FFFDF9',
+        text:           '#16130F',
+        muted:          '#5F584E', // body copy on light backgrounds
+        'muted-dark':   '#A8B4AB', // body copy on forest backgrounds
+        light:          '#9A9286',
+        accent:         '#9C7741', // brass — readable on ivory
+        'accent-dark':  '#7A5C30',
+        'accent-light': '#CDAE7A', // brass for use on forest
+        border:         '#E2D9C9',
+        'border-dark':  '#2A4035',
       },
       fontFamily: {
         display: ['var(--font-display)', 'Georgia', 'serif'],
@@ -39,7 +42,7 @@ module.exports = {
       keyframes: {
         scroll: {
           '0%':   { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-33.333%)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
       },
       animation: {

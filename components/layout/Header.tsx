@@ -24,9 +24,9 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // On the homepage hero (dark image behind transparent header),
-  // mobile icons need to be light. Once scrolled, header gets a bg so revert to dark.
-  const mobileOnDarkHero = pathname === '/' && !scrolled;
+  // Over the homepage's dark hero image the header is transparent with light content.
+  // Once scrolled (or with the mobile menu open) it gets an ivory bar with dark content.
+  const onDarkHero = pathname === '/' && !scrolled && !menuOpen;
   const { openCart, totalItems } = useCartStore();
   const count = totalItems();
 
@@ -47,8 +47,8 @@ export default function Header() {
       <header
         className={cn(
           'fixed top-0 left-0 right-0 z-50 h-[72px] transition-all duration-400 ease-custom',
-          scrolled
-            ? 'backdrop-blur-xl bg-bg/80 shadow-[0_1px_0_theme(colors.border)]'
+          scrolled || menuOpen
+            ? 'bg-bg shadow-[0_1px_0_theme(colors.border)]'
             : 'bg-transparent'
         )}
       >
@@ -62,9 +62,7 @@ export default function Header() {
               height={240}
               className={cn(
                 'h-[90px] w-auto object-contain transition-all duration-300 flex-shrink-0',
-                mobileOnDarkHero
-                  ? 'invert mix-blend-normal md:invert-0 md:mix-blend-multiply'
-                  : 'mix-blend-multiply'
+                onDarkHero ? 'invert mix-blend-screen' : 'mix-blend-multiply'
               )}
               priority
             />
@@ -83,9 +81,13 @@ export default function Header() {
                     'transition-colors duration-200',
                     'after:absolute after:left-0 after:-bottom-0.5 after:h-px after:bg-accent',
                     'after:transition-all after:duration-300 after:ease-custom',
-                    isActive
-                      ? 'text-text after:w-full'
-                      : 'text-muted hover:text-text after:w-0 hover:after:w-full'
+                    onDarkHero
+                      ? isActive
+                        ? 'text-bg after:w-full after:bg-accent-light'
+                        : 'text-bg/75 hover:text-bg after:w-0 hover:after:w-full after:bg-accent-light'
+                      : isActive
+                        ? 'text-text after:w-full'
+                        : 'text-muted hover:text-text after:w-0 hover:after:w-full'
                   )}
                 >
                   {link.label}
@@ -101,7 +103,7 @@ export default function Header() {
               onClick={openCart}
               className={cn(
                 'relative flex items-center gap-2 transition-colors duration-200',
-                mobileOnDarkHero ? 'text-bg hover:text-accent md:text-text md:hover:text-accent' : 'text-text hover:text-accent'
+                onDarkHero ? 'text-bg hover:text-accent-light' : 'text-text hover:text-accent'
               )}
             >
               <ShoppingBag size={20} strokeWidth={1.5} />
@@ -127,7 +129,10 @@ export default function Header() {
             {/* CTA — desktop */}
             <Link
               href="/contact"
-              className="hidden md:flex group items-center gap-1.5 btn-primary py-2 px-6 text-[12px]"
+              className={cn(
+                'hidden md:flex group items-center gap-1.5 py-2 px-6 text-[12px]',
+                onDarkHero ? 'btn-light' : 'btn-primary'
+              )}
             >
               Get a Quote
               <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-200" />
@@ -138,9 +143,10 @@ export default function Header() {
               onClick={() => setMenuOpen((v) => !v)}
               className={cn(
                 'md:hidden p-1.5 transition-colors duration-300',
-                mobileOnDarkHero ? 'text-bg' : 'text-text'
+                onDarkHero ? 'text-bg' : 'text-text'
               )}
               aria-label="Toggle menu"
+              aria-expanded={menuOpen}
             >
               {menuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>

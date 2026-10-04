@@ -1,4 +1,5 @@
 import Hero from '@/components/home/Hero';
+import Marquee from '@/components/home/Marquee';
 import AboutTeaser from '@/components/home/AboutTeaser';
 import CategoryGrid from '@/components/home/CategoryGrid';
 import FeaturedProducts from '@/components/home/FeaturedProducts';
@@ -17,10 +18,11 @@ export default async function HomePage() {
   return (
     <>
       <Hero />
+      <Marquee />
       <AboutTeaser />
-      <ScheduledGifting />
       <CategoryGrid products={products} />
-      <FeaturedProducts products={featured} />
+      <FeaturedProducts featured={featured} all={products} />
+      <ScheduledGifting />
       <ServicesStrip />
       <Testimonials />
       <CtaBanner />

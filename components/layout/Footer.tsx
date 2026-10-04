@@ -28,10 +28,10 @@ export default function Footer() {
                 className="h-40 w-auto object-contain invert"
               />
             </Link>
-            <p className="font-display italic text-muted text-[17px] mb-4">
+            <p className="font-display italic text-muted-dark text-[17px] mb-4">
               Where tradition meets modernity
             </p>
-            <p className="text-[13px] text-muted font-body leading-relaxed">
+            <p className="text-[13px] text-muted-dark font-body leading-relaxed">
               Premium handcrafted corporate gifts from Jaipur, crafted with care for the businesses that care about their people.
             </p>
           </div>
@@ -46,7 +46,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-[13px] font-body text-muted hover:text-bg transition-colors duration-200 tracking-[0.03em]"
+                    className="text-[13px] font-body text-muted-dark hover:text-bg transition-colors duration-200 tracking-[0.03em]"
                   >
                     {link.label}
                   </Link>
@@ -63,31 +63,31 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-start gap-2.5">
                 <MapPin size={14} className="mt-0.5 text-accent flex-shrink-0" />
-                <span className="text-[13px] font-body text-muted leading-relaxed">
+                <span className="text-[13px] font-body text-muted-dark leading-relaxed">
                   546, Shanti Nagar, near CK Birla Hospital,<br />Durgapura, Jaipur – 302018
                 </span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone size={14} className="text-accent flex-shrink-0" />
-                <a href="tel:+919057370100" className="text-[13px] font-body text-muted hover:text-bg transition-colors">
+                <a href="tel:+919057370100" className="text-[13px] font-body text-muted-dark hover:text-bg transition-colors">
                   +91 9057370100
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <MessageCircle size={14} className="text-accent flex-shrink-0" />
-                <a href="https://wa.me/919057370100" className="text-[13px] font-body text-muted hover:text-bg transition-colors">
+                <a href="https://wa.me/919057370100" className="text-[13px] font-body text-muted-dark hover:text-bg transition-colors">
                   +91 9057370100
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail size={14} className="text-accent flex-shrink-0" />
-                <a href="mailto:corpift@outlook.com" className="text-[13px] font-body text-muted hover:text-bg transition-colors">
+                <a href="mailto:corpift@outlook.com" className="text-[13px] font-body text-muted-dark hover:text-bg transition-colors">
                   corpift@outlook.com
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
                 <Clock size={14} className="mt-0.5 text-accent flex-shrink-0" />
-                <span className="text-[13px] font-body text-muted leading-relaxed">
+                <span className="text-[13px] font-body text-muted-dark leading-relaxed">
                   Mon–Fri: 7am–10pm<br />Sat–Sun: 9am–5pm
                 </span>
               </li>
@@ -97,10 +97,10 @@ export default function Footer() {
 
         {/* Bottom row */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8">
-          <p className="text-[12px] font-body text-muted tracking-[0.03em]">
+          <p className="text-[12px] font-body text-muted-dark tracking-[0.03em]">
             © {new Date().getFullYear()} Corpift. All rights reserved.
           </p>
-          <p className="text-[12px] font-body text-muted">
+          <p className="text-[12px] font-body text-muted-dark">
             Crafted with care in Jaipur, India.
           </p>
         </div>

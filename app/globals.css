@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-
   body {
     @apply bg-bg text-text font-body antialiased;
+  }
+
+  ::selection {
+    @apply bg-accent-light/40 text-text;
   }
 
   ::-webkit-scrollbar {
@@ -31,18 +31,33 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  /* Lenis smooth scroll */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-text text-bg text-[13px] font-medium tracking-[0.06em] uppercase py-3 px-8 rounded-sm
+    @apply bg-bg-dark text-bg text-[13px] font-medium tracking-[0.06em] uppercase py-3 px-8 rounded-sm
            transition-all duration-300 font-body
-           hover:bg-accent hover:-translate-y-px;
+           hover:bg-accent-dark hover:-translate-y-px;
     transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
   .btn-outline {
-    @apply border border-border-dark text-text text-[13px] font-medium tracking-[0.06em] uppercase py-3 px-8 rounded-sm
+    @apply border border-text/25 text-text text-[13px] font-medium tracking-[0.06em] uppercase py-3 px-8 rounded-sm
            transition-all duration-300 font-body
            hover:border-accent hover:text-accent hover:-translate-y-px;
     transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -60,5 +75,34 @@
            transition-all duration-300 font-body
            hover:bg-accent-dark hover:-translate-y-px;
     transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Ivory button for use on forest / image backgrounds */
+  .btn-light {
+    @apply bg-bg text-text text-[13px] font-medium tracking-[0.06em] uppercase py-3 px-8 rounded-sm
+           transition-all duration-300 font-body
+           hover:bg-accent-light hover:-translate-y-px;
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Outlined display numerals */
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px theme('colors.accent-light');
+  }
+}
+
+@keyframes heroProgress {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

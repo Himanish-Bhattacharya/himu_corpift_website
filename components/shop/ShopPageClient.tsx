@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import type { Product, Category } from '@/data/products';
@@ -13,13 +13,19 @@ const PAGE_SIZE = 24;
 
 export default function ShopPageClient({ products }: { products: Product[] }) {
   const [activeCategory, setActiveCategory] = useState('all');
+
+  // Honour /shop?category=… links (e.g. from the homepage category cards)
+  useEffect(() => {
+    const cat = new URLSearchParams(window.location.search).get('category');
+    if (cat && CATEGORIES.some((c) => c.slug === cat)) setActiveCategory(cat);
+  }, []);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [newFromIndex, setNewFromIndex] = useState(0);
 
   const filtered =
     activeCategory === 'all'
       ? products
-      : products.filter((p) => p.categories.includes(activeCategory as Category));
+      : products.filter((p) => p.categories?.includes(activeCategory as Category));
 
   const visible = filtered.slice(0, visibleCount);
   const hasMore = visibleCount < filtered.length;
@@ -58,7 +64,11 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
       </section>
 
       {/* Filter bar */}
-      <FilterBar active={activeCategory} onChange={handleCategoryChange} />
+      <FilterBar
+        categories={CATEGORIES.filter((c) => products.some((p) => p.categories?.includes(c.slug as Category)))}
+        active={activeCategory}
+        onChange={handleCategoryChange}
+      />
 
       {/* Product grid */}
       <section className="bg-bg py-16 md:py-24">
