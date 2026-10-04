@@ -106,24 +106,27 @@ export default function Header() {
                 onDarkHero ? 'text-bg hover:text-accent-light' : 'text-text hover:text-accent'
               )}
             >
-              <ShoppingBag size={20} strokeWidth={1.5} />
+              {/* Badge is anchored to the bag icon so it never covers the "Inquiry" label */}
+              <span className="relative">
+                <ShoppingBag size={20} strokeWidth={1.5} />
+                <AnimatePresence>
+                  {mounted && count > 0 && (
+                    <motion.span
+                      key="badge"
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                      className="absolute -top-1.5 -right-2 min-w-[16px] h-4 px-1 bg-accent rounded-full text-white text-[10px] font-bold flex items-center justify-center font-body"
+                    >
+                      {count > 9 ? '9+' : count}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </span>
               <span className="hidden md:block text-[12px] font-medium tracking-[0.08em] uppercase font-body">
                 Inquiry
               </span>
-              <AnimatePresence>
-                {mounted && count > 0 && (
-                  <motion.span
-                    key="badge"
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0, opacity: 0 }}
-                    transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-                    className="absolute top-0 right-0 md:-top-1.5 md:-right-1.5 w-4 h-4 bg-accent rounded-full text-white text-[10px] font-bold flex items-center justify-center font-body"
-                  >
-                    {count > 9 ? '9+' : count}
-                  </motion.span>
-                )}
-              </AnimatePresence>
             </button>
 
             {/* CTA — desktop */}

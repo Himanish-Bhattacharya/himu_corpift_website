@@ -53,11 +53,15 @@ export default function ServicesStrip({ heading, services }: { heading: string; 
                 >
                   {String(i + 1).padStart(2, '0')}
                 </span>
+                {/* GSAP animates the h3's transform on scroll, so the hover nudge lives on an inner span —
+                    a CSS transform transition on the same element fights GSAP and leaves it offset */}
                 <h3
                   data-svc-fade
-                  className="col-span-12 md:col-span-5 font-display text-[30px] md:text-[clamp(30px,3.2vw,44px)] leading-[1.1] transition-transform duration-500 group-hover:translate-x-2"
+                  className="col-span-12 md:col-span-5 font-display text-[30px] md:text-[clamp(30px,3.2vw,44px)] leading-[1.1]"
                 >
-                  {service.title}
+                  <span className="inline-block transition-transform duration-500 group-hover:translate-x-2">
+                    {service.title}
+                  </span>
                 </h3>
                 <p
                   data-svc-fade

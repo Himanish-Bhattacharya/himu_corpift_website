@@ -100,7 +100,9 @@ export default function Hero({ slides: SLIDES, eyebrow, headline, text }: HeroPr
 
         <h1 className="font-display font-light text-[clamp(48px,8.4vw,124px)] leading-[0.98] tracking-[-0.02em] mb-8 md:mb-10">
           {headingLines(headline).map((line, i) => (
-            <span key={i} className="block overflow-hidden pb-[0.06em]">
+            // Mask has extra room below (and to the sides) so italic descenders like the "f" in
+            // "crafted" aren't clipped; the negative margins keep the visual line spacing unchanged.
+            <span key={i} className="block overflow-hidden pb-[0.22em] -mb-[0.16em] px-[0.08em] -mx-[0.08em]">
               <span data-hero-line className="block">
                 <AccentedLine text={line} accentClass="text-accent-light" />
               </span>
