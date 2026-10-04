@@ -111,7 +111,8 @@ export async function POST(request: Request) {
     `;
 
     await transporter.sendMail({
-      from: `"Corpift Website" <${process.env.SMTP_USER}>`,
+      // SMTP_FROM is needed for providers like Resend, where the login user ("resend") isn't an email address
+      from: process.env.SMTP_FROM ?? `"Corpift Website" <${process.env.SMTP_USER}>`,
       to: process.env.CONTACT_EMAIL ?? 'corpift@outlook.com',
       replyTo: email,
       subject,
