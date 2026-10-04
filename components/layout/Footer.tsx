@@ -25,7 +25,7 @@ export default function Footer() {
                 alt="Corpift"
                 width={160}
                 height={54}
-                className="h-40 w-auto object-contain invert"
+                className="h-28 md:h-40 w-auto object-contain invert -ml-3"
               />
             </Link>
             <p className="font-display italic text-muted-dark text-[17px] mb-4">
@@ -41,12 +41,12 @@ export default function Footer() {
             <p className="text-[11px] font-medium tracking-[0.14em] uppercase font-body text-accent mb-4">
               Navigate
             </p>
-            <ul className="space-y-3">
+            <ul className="space-y-1.5">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-[13px] font-body text-muted-dark hover:text-bg transition-colors duration-200 tracking-[0.03em]"
+                    className="inline-block py-1.5 text-[14px] md:text-[13px] font-body text-muted-dark hover:text-bg transition-colors duration-200 tracking-[0.03em]"
                   >
                     {link.label}
                   </Link>
@@ -60,7 +60,7 @@ export default function Footer() {
             <p className="text-[11px] font-medium tracking-[0.14em] uppercase font-body text-accent mb-4">
               Find Us
             </p>
-            <ul className="space-y-3">
+            <ul className="space-y-1.5">
               <li className="flex items-start gap-2.5">
                 <MapPin size={14} className="mt-0.5 text-accent flex-shrink-0" />
                 <span className="text-[13px] font-body text-muted-dark leading-relaxed">
@@ -69,19 +69,19 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone size={14} className="text-accent flex-shrink-0" />
-                <a href="tel:+919057370100" className="text-[13px] font-body text-muted-dark hover:text-bg transition-colors">
+                <a href="tel:+919057370100" className="inline-block py-1 text-[14px] md:text-[13px] font-body text-muted-dark hover:text-bg transition-colors">
                   +91 9057370100
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <MessageCircle size={14} className="text-accent flex-shrink-0" />
-                <a href="https://wa.me/919057370100" className="text-[13px] font-body text-muted-dark hover:text-bg transition-colors">
+                <a href="https://wa.me/919057370100" className="inline-block py-1 text-[14px] md:text-[13px] font-body text-muted-dark hover:text-bg transition-colors">
                   +91 9057370100
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail size={14} className="text-accent flex-shrink-0" />
-                <a href="mailto:corpift@outlook.com" className="text-[13px] font-body text-muted-dark hover:text-bg transition-colors">
+                <a href="mailto:corpift@outlook.com" className="inline-block py-1 text-[14px] md:text-[13px] font-body text-muted-dark hover:text-bg transition-colors">
                   corpift@outlook.com
                 </a>
               </li>

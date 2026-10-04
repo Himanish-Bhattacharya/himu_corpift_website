@@ -7,16 +7,17 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { CATEGORIES, type Category, type Product } from '@/data/products';
 import SectionLabel from '@/components/shared/SectionLabel';
 import { gsap, useGSAP, prefersReducedMotion } from '@/lib/gsap';
+import type { CmsImage } from '@/data/homepage';
+import Accented from '@/components/shared/Accented';
 
-const BG_IMAGES: Record<string, string> = {
-  clients:     '/images/categories/client_category.jpeg',
-  employees:   '/images/categories/employee_category.jpeg',
-  sustainable: '/images/categories/sustainable_category.jpeg',
-  festival:    '/images/categories/festival_category.jpeg',
-  handicraft:  '/images/categories/handicraft_category.jpeg',
-};
+interface CategoryGridProps {
+  products: Product[];
+  heading: string;
+  text: string;
+  images: Record<string, CmsImage>;
+}
 
-export default function CategoryGrid({ products }: { products: Product[] }) {
+export default function CategoryGrid({ products, heading, text, images }: CategoryGridProps) {
   const root = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
 
@@ -81,11 +82,10 @@ export default function CategoryGrid({ products }: { products: Product[] }) {
     <>
       <SectionLabel light className="block mb-5">Browse by Category</SectionLabel>
             <h2 className="font-display text-[clamp(40px,5vw,72px)] leading-[1] mb-6">
-              Something for <em className="italic text-accent-light">every</em> occasion
+              <Accented text={heading} accentClass="text-accent-light" />
             </h2>
             <p className="text-[15px] font-body text-muted-dark leading-relaxed max-w-sm mb-10">
-              From onboarding kits to festive hampers — explore collections built for the people who matter to
-              your business.
+              {text}
             </p>
             <Link
               href="/shop"
@@ -122,13 +122,14 @@ export default function CategoryGrid({ products }: { products: Product[] }) {
               className="group snap-start shrink-0 relative w-[78vw] sm:w-[52vw] lg:w-[30vw] max-w-[460px] h-[480px] lg:h-[72vh] lg:max-h-[640px] rounded-sm overflow-hidden bg-bg-dark-2"
             >
               <div data-cat-img className="absolute inset-0 -left-[8%] w-[116%]">
-                {BG_IMAGES[cat.slug] && (
+                {images[cat.slug] && (
                   <Image
-                    src={BG_IMAGES[cat.slug]}
-                    alt=""
+                    src={images[cat.slug].src}
+                    alt={images[cat.slug].alt}
                     fill
                     sizes="(max-width: 1024px) 80vw, 30vw"
                     className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                    style={images[cat.slug].position ? { objectPosition: images[cat.slug].position } : undefined}
                     loading="lazy"
                   />
                 )}

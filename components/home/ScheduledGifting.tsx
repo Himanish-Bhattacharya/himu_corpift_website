@@ -6,6 +6,7 @@ import { ArrowRight, ListChecks, Gift, Truck } from 'lucide-react';
 import SectionLabel from '@/components/shared/SectionLabel';
 import RevealOnScroll from '@/components/shared/RevealOnScroll';
 import { gsap, useGSAP, prefersReducedMotion } from '@/lib/gsap';
+import Accented from '@/components/shared/Accented';
 
 const STEPS = [
   {
@@ -28,7 +29,7 @@ const STEPS = [
   },
 ];
 
-export default function ScheduledGifting() {
+export default function ScheduledGifting({ heading, text, price }: { heading: string; text: string; price: number }) {
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -65,11 +66,10 @@ export default function ScheduledGifting() {
             <div>
               <SectionLabel className="block mb-5">New Service</SectionLabel>
               <h2 className="font-display text-[clamp(40px,5.4vw,76px)] text-text leading-[0.98]">
-                Scheduled <em className="italic text-accent">Gifting</em>
+                <Accented text={heading} />
               </h2>
               <p className="text-[15px] font-body text-muted mt-6 max-w-lg leading-relaxed">
-                Never miss a birthday, anniversary or celebration again. Share your list once — we handle every
-                gift, every time.
+                {text}
               </p>
             </div>
 
@@ -79,7 +79,7 @@ export default function ScheduledGifting() {
                 Starting from
               </p>
               <p className="font-display text-[56px] leading-none">
-                ₹15<span className="text-[18px] text-muted-dark font-body ml-2">/ person</span>
+                ₹{price.toLocaleString('en-IN')}<span className="text-[18px] text-muted-dark font-body ml-2">/ person</span>
               </p>
             </div>
           </div>

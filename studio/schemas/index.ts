@@ -1,4 +1,5 @@
 import product from './product';
 import blogPost from './blogPost';
+import homepage from './homepage';
 
-export const schemaTypes = [product, blogPost];
+export const schemaTypes = [homepage, product, blogPost];

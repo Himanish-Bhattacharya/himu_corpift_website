@@ -5,28 +5,17 @@ import { AnimatePresence, motion } from 'framer-motion';
 import SectionLabel from '@/components/shared/SectionLabel';
 import RevealOnScroll from '@/components/shared/RevealOnScroll';
 import { cn } from '@/lib/utils';
+import type { Testimonial } from '@/data/homepage';
 
-const TESTIMONIALS = [
-  {
-    quote: 'Lovely experience with Corpift. Products quality is super. On time delivery. Will definitely order again for our next corporate event.',
-    name: 'Abhilash Joshi',
-    city: 'Mumbai',
-  },
-  {
-    quote: 'Amazing diaries. Good quality pages and designs are also great. Feels like a Jackpot! Our entire team was thrilled with the gifting.',
-    name: 'Rupal Srivastav',
-    city: 'Mumbai',
-  },
-];
-
-export default function Testimonials() {
+export default function Testimonials({ items: TESTIMONIALS }: { items: Testimonial[] }) {
   const [index, setIndex] = useState(0);
   const t = TESTIMONIALS[index];
 
   useEffect(() => {
+    if (TESTIMONIALS.length < 2) return;
     const id = setInterval(() => setIndex((i) => (i + 1) % TESTIMONIALS.length), 7000);
     return () => clearInterval(id);
-  }, [index]);
+  }, [index, TESTIMONIALS.length]);
 
   return (
     <section className="bg-bg py-24 md:py-40 overflow-hidden">
@@ -58,24 +47,29 @@ export default function Testimonials() {
                 <figcaption className="flex items-center justify-center gap-4">
                   <span className="w-10 h-px bg-accent" />
                   <span className="text-[13px] font-medium font-body text-text tracking-[0.04em]">{t.name}</span>
-                  <span className="text-[13px] font-body text-muted">{t.city}</span>
+                  {t.city && <span className="text-[13px] font-body text-muted">{t.city}</span>}
                   <span className="w-10 h-px bg-accent" />
                 </figcaption>
               </motion.figure>
             </AnimatePresence>
           </div>
 
-          <div className="flex justify-center gap-3 mt-12">
+          <div className="flex justify-center gap-1 mt-10">
             {TESTIMONIALS.map((item, i) => (
+              // Thin bar visually, but a full-size tap target
               <button
-                key={item.name}
+                key={item.name + i}
                 onClick={() => setIndex(i)}
                 aria-label={`Show testimonial from ${item.name}`}
-                className={cn(
-                  'h-[3px] rounded-full transition-all duration-500',
-                  i === index ? 'w-10 bg-accent' : 'w-4 bg-text/20 hover:bg-text/40'
-                )}
-              />
+                className="group h-11 px-2 flex items-center"
+              >
+                <span
+                  className={cn(
+                    'block h-[3px] rounded-full transition-all duration-500',
+                    i === index ? 'w-10 bg-accent' : 'w-4 bg-text/20 group-hover:bg-text/40'
+                  )}
+                />
+              </button>
             ))}
           </div>
         </div>

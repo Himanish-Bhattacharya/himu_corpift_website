@@ -165,9 +165,10 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
                     </label>
                     <input
                       {...register('name')}
+                      autoComplete="name"
                       placeholder="Your name"
                       className={cn(
-                        'w-full px-4 py-3 bg-bg border rounded-sm text-[14px] font-body text-text placeholder:text-light',
+                        'w-full px-4 py-3 bg-bg border rounded-sm text-[16px] md:text-[14px] font-body text-text placeholder:text-light',
                         'transition-all duration-200 outline-none',
                         'focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent',
                         errors.name ? 'border-red-400' : 'border-border'
@@ -184,9 +185,10 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
                     </label>
                     <input
                       {...register('company')}
+                      autoComplete="organization"
                       placeholder="Company name"
                       className={cn(
-                        'w-full px-4 py-3 bg-bg border rounded-sm text-[14px] font-body text-text placeholder:text-light',
+                        'w-full px-4 py-3 bg-bg border rounded-sm text-[16px] md:text-[14px] font-body text-text placeholder:text-light',
                         'transition-all duration-200 outline-none',
                         'focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent',
                         errors.company ? 'border-red-400' : 'border-border'
@@ -205,10 +207,11 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
                     </label>
                     <input
                       {...register('email')}
+                      autoComplete="email"
                       type="email"
                       placeholder="you@company.com"
                       className={cn(
-                        'w-full px-4 py-3 bg-bg border rounded-sm text-[14px] font-body text-text placeholder:text-light',
+                        'w-full px-4 py-3 bg-bg border rounded-sm text-[16px] md:text-[14px] font-body text-text placeholder:text-light',
                         'transition-all duration-200 outline-none',
                         'focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent',
                         errors.email ? 'border-red-400' : 'border-border'
@@ -225,10 +228,11 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
                     </label>
                     <input
                       {...register('phone')}
+                      autoComplete="tel"
                       type="tel"
                       placeholder="+91 98765 43210"
                       className={cn(
-                        'w-full px-4 py-3 bg-bg border rounded-sm text-[14px] font-body text-text placeholder:text-light',
+                        'w-full px-4 py-3 bg-bg border rounded-sm text-[16px] md:text-[14px] font-body text-text placeholder:text-light',
                         'transition-all duration-200 outline-none',
                         'focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent',
                         errors.phone ? 'border-red-400' : 'border-border'
@@ -249,7 +253,7 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
                     rows={3}
                     placeholder="Any special requirements or customisation requests..."
                     className={cn(
-                      'w-full px-4 py-3 bg-bg border border-border rounded-sm text-[14px] font-body text-text placeholder:text-light',
+                      'w-full px-4 py-3 bg-bg border border-border rounded-sm text-[16px] md:text-[14px] font-body text-text placeholder:text-light',
                       'transition-all duration-200 outline-none resize-none',
                       'focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent'
                     )}

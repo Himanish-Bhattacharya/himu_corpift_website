@@ -5,26 +5,10 @@ import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import SectionLabel from '@/components/shared/SectionLabel';
 import { gsap, useGSAP, prefersReducedMotion } from '@/lib/gsap';
+import type { Service } from '@/data/homepage';
+import Accented from '@/components/shared/Accented';
 
-const SERVICES = [
-  {
-    num: '01',
-    title: 'Customised Gift Hampers',
-    desc: 'Bespoke hampers designed around your brand, budget and recipients — from concept to doorstep.',
-  },
-  {
-    num: '02',
-    title: 'Handcrafted Gifts',
-    desc: "Artisanal pieces sourced directly from Jaipur's finest craftspeople, carrying culture in every detail.",
-  },
-  {
-    num: '03',
-    title: 'Quality, Checked by Hand',
-    desc: 'Every item individually reviewed for quality, sustainability and that elusive element of delight.',
-  },
-];
-
-export default function ServicesStrip() {
+export default function ServicesStrip({ heading, services }: { heading: string; services: Service[] }) {
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -46,7 +30,7 @@ export default function ServicesStrip() {
           <div>
             <SectionLabel light className="block mb-5">What We Do</SectionLabel>
             <h2 className="font-display text-[clamp(40px,5vw,72px)] leading-[1]">
-              The craft <em className="italic text-accent-light">behind</em> every gift
+              <Accented text={heading} accentClass="text-accent-light" />
             </h2>
           </div>
           <Link
@@ -59,15 +43,15 @@ export default function ServicesStrip() {
         </div>
 
         <div>
-          {SERVICES.map((service) => (
-            <div key={service.num} data-svc-row className="group relative">
+          {services.map((service, i) => (
+            <div key={service.title + i} data-svc-row className="group relative">
               <div data-svc-rule className="h-px bg-border-dark" />
-              <div className="grid grid-cols-12 gap-x-8 gap-y-4 md:items-center py-10 md:py-14">
+              <div className="grid grid-cols-12 md:gap-x-8 gap-y-4 md:items-center py-10 md:py-14">
                 <span
                   data-svc-fade
                   className="col-span-12 md:col-span-2 font-display text-[52px] md:text-[88px] leading-none text-outline transition-colors duration-500 group-hover:text-accent-light/20"
                 >
-                  {service.num}
+                  {String(i + 1).padStart(2, '0')}
                 </span>
                 <h3
                   data-svc-fade
@@ -79,7 +63,7 @@ export default function ServicesStrip() {
                   data-svc-fade
                   className="col-span-12 md:col-span-5 text-[15px] font-body text-muted-dark leading-relaxed md:pl-4"
                 >
-                  {service.desc}
+                  {service.description}
                 </p>
               </div>
             </div>

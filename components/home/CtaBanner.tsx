@@ -6,8 +6,10 @@ import Image from 'next/image';
 import { ArrowRight, Phone } from 'lucide-react';
 import SectionLabel from '@/components/shared/SectionLabel';
 import { gsap, useGSAP, prefersReducedMotion } from '@/lib/gsap';
+import type { CmsImage } from '@/data/homepage';
+import Accented from '@/components/shared/Accented';
 
-export default function CtaBanner() {
+export default function CtaBanner({ image, heading, text }: { image: CmsImage; heading: string; text: string }) {
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -32,11 +34,12 @@ export default function CtaBanner() {
     <section ref={root} className="relative bg-bg-dark text-bg overflow-hidden">
       <div data-cta-img className="absolute inset-0">
         <Image
-          src="/images/hero/slide-4.jpg"
-          alt=""
+          src={image.src}
+          alt={image.alt}
           fill
           sizes="100vw"
           className="object-cover"
+          style={image.position ? { objectPosition: image.position } : undefined}
           loading="lazy"
         />
       </div>
@@ -49,13 +52,11 @@ export default function CtaBanner() {
           data-cta-head
           className="font-display italic font-light text-[clamp(48px,8vw,120px)] leading-[0.95] mb-10 md:mb-14"
         >
-          Ready to elevate
-          <br />
-          your <span className="text-accent-light">gifting?</span>
+          <Accented text={heading} accentClass="text-accent-light" />
         </h2>
 
         <p className="text-[15px] md:text-[16px] font-body text-bg/75 max-w-lg mx-auto leading-relaxed mb-10">
-          Tell us about your team, your clients and your budget — we&apos;ll come back with a curated proposal.
+          {text}
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">

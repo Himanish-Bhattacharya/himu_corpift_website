@@ -102,7 +102,7 @@ export default function Header() {
             <button
               onClick={openCart}
               className={cn(
-                'relative flex items-center gap-2 transition-colors duration-200',
+                'relative flex items-center gap-2 p-2 -m-2 md:m-0 md:p-0 transition-colors duration-200',
                 onDarkHero ? 'text-bg hover:text-accent-light' : 'text-text hover:text-accent'
               )}
             >
@@ -118,7 +118,7 @@ export default function Header() {
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0, opacity: 0 }}
                     transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-                    className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-accent rounded-full text-white text-[10px] font-bold flex items-center justify-center font-body"
+                    className="absolute top-0 right-0 md:-top-1.5 md:-right-1.5 w-4 h-4 bg-accent rounded-full text-white text-[10px] font-bold flex items-center justify-center font-body"
                   >
                     {count > 9 ? '9+' : count}
                   </motion.span>
@@ -142,7 +142,7 @@ export default function Header() {
             <button
               onClick={() => setMenuOpen((v) => !v)}
               className={cn(
-                'md:hidden p-1.5 transition-colors duration-300',
+                'md:hidden p-2.5 -mr-2.5 transition-colors duration-300',
                 onDarkHero ? 'text-bg' : 'text-text'
               )}
               aria-label="Toggle menu"

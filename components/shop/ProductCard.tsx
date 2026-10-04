@@ -81,14 +81,14 @@ export default function ProductCard({ product }: ProductCardProps) {
             <button
               onClick={prevImage}
               aria-label="Previous image"
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-bg-card/85 hover:bg-bg-card text-text rounded-full p-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10"
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-bg-card/85 hover:bg-bg-card text-text rounded-full p-2 md:p-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10"
             >
               <ChevronLeft size={18} />
             </button>
             <button
               onClick={nextImage}
               aria-label="Next image"
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-bg-card/85 hover:bg-bg-card text-text rounded-full p-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-bg-card/85 hover:bg-bg-card text-text rounded-full p-2 md:p-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10"
             >
               <ChevronRight size={18} />
             </button>

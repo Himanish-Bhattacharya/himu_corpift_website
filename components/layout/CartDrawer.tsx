@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { X, ShoppingBag, Trash2, Plus, Minus } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import InquiryModal from '@/components/shared/InquiryModal';
-import { formatPrice } from '@/lib/utils';
+import { displayName, formatPrice } from '@/lib/utils';
 
 export default function CartDrawer() {
   const {
@@ -96,8 +96,8 @@ export default function CartDrawer() {
                           <p className="text-[11px] font-medium tracking-[0.12em] uppercase text-accent font-body mb-0.5">
                             {item.category}
                           </p>
-                          <p className="font-display text-[17px] text-text leading-tight truncate">
-                            {item.name}
+                          <p className="font-display text-[17px] text-text leading-tight line-clamp-2">
+                            {displayName(item.name)}
                           </p>
                           <p className="font-display text-accent text-[15px] mt-1">
                             Rs. {(item.price * item.quantity).toLocaleString('en-IN')}

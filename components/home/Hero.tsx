@@ -6,23 +6,27 @@ import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { gsap, useGSAP, prefersReducedMotion } from '@/lib/gsap';
 import { cn } from '@/lib/utils';
+import type { CmsImage } from '@/data/homepage';
+import { AccentedLine, headingLines } from '@/components/shared/Accented';
 
-const SLIDES = [
-  { src: '/images/hero/slide-3.jpg', alt: 'Curated corporate gift boxes with watch, diary and accessories' },
-  { src: '/images/hero/slide-4.jpg', alt: 'Wrapped corporate gift and leather diary on a boardroom table' },
-  { src: '/images/hero/slide-1.jpg', alt: 'Branded gift boxes in soft sage and ivory' },
-];
+interface HeroProps {
+  slides: CmsImage[];
+  eyebrow: string;
+  headline: string;
+  text: string;
+}
 
 const INTERVAL = 6000;
 
-export default function Hero() {
+export default function Hero({ slides: SLIDES, eyebrow, headline, text }: HeroProps) {
   const root = useRef<HTMLElement>(null);
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
+    if (SLIDES.length < 2) return;
     const id = setInterval(() => setCurrent((c) => (c + 1) % SLIDES.length), INTERVAL);
     return () => clearInterval(id);
-  }, []);
+  }, [SLIDES.length]);
 
   useGSAP(
     () => {
@@ -57,7 +61,7 @@ export default function Hero() {
       <div data-hero-media className="absolute inset-0 -top-[8%] h-[116%]">
         {SLIDES.map((slide, i) => (
           <div
-            key={slide.src}
+            key={slide.src + i}
             className={cn(
               'absolute inset-0 transition-opacity duration-[1600ms] ease-in-out',
               i === current ? 'opacity-100' : 'opacity-0'
@@ -73,6 +77,7 @@ export default function Hero() {
                 'object-cover transition-transform duration-[7000ms] ease-out',
                 i === current ? 'scale-100' : 'scale-[1.08]'
               )}
+              style={slide.position ? { objectPosition: slide.position } : undefined}
             />
           </div>
         ))}
@@ -90,24 +95,23 @@ export default function Hero() {
       >
         <p data-hero-fade className="flex items-center gap-3 text-[11px] font-medium tracking-[0.2em] uppercase font-body text-accent-light mb-6 md:mb-8">
           <span data-hero-rule className="block w-10 h-px bg-accent-light" />
-          Corporate gifting · Since 2022
+          {eyebrow}
         </p>
 
         <h1 className="font-display font-light text-[clamp(48px,8.4vw,124px)] leading-[0.98] tracking-[-0.02em] mb-8 md:mb-10">
-          <span className="block overflow-hidden pb-[0.06em]">
-            <span data-hero-line className="block">Corporate gifts,</span>
-          </span>
-          <span className="block overflow-hidden pb-[0.06em]">
-            <span data-hero-line className="block">
-              <em className="italic text-accent-light">crafted</em> in Jaipur.
+          {headingLines(headline).map((line, i) => (
+            <span key={i} className="block overflow-hidden pb-[0.06em]">
+              <span data-hero-line className="block">
+                <AccentedLine text={line} accentClass="text-accent-light" />
+              </span>
             </span>
-          </span>
+          ))}
         </h1>
 
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-10">
           <div>
             <p data-hero-fade className="max-w-md text-[15px] md:text-[16px] text-bg/80 font-body leading-relaxed mb-9">
-              Handcrafted, sustainable gift hampers for teams and clients — curated, branded and delivered across India.
+              {text}
             </p>
             <div data-hero-fade className="flex flex-wrap items-center gap-x-8 gap-y-5">
               <Link href="/shop" className="group btn-light inline-flex items-center gap-2">
@@ -125,7 +129,7 @@ export default function Hero() {
           </div>
 
           {/* Slide progress */}
-          <div data-hero-fade className="hidden md:flex items-center gap-4">
+          <div data-hero-fade className={cn('hidden items-center gap-4', SLIDES.length > 1 && 'md:flex')}>
             <span className="font-body text-[12px] tracking-[0.14em] text-bg/70 tabular-nums">
               {String(current + 1).padStart(2, '0')}
             </span>

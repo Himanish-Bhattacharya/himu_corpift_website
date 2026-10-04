@@ -1,17 +1,8 @@
-const ITEMS = [
-  'Handcrafted in Jaipur',
-  'Custom branding',
-  'Bulk & corporate orders',
-  'Sustainable materials',
-  'Festive hampers',
-  'Pan-India delivery',
-];
-
-export default function Marquee() {
+export default function Marquee({ items: ITEMS }: { items: string[] }) {
   const row = (
     <div className="flex items-center shrink-0" aria-hidden>
-      {ITEMS.map((item) => (
-        <span key={item} className="flex items-center">
+      {ITEMS.map((item, i) => (
+        <span key={item + i} className="flex items-center">
           <span className="font-display italic text-[22px] md:text-[28px] text-text/80 px-8 md:px-10 whitespace-nowrap">
             {item}
           </span>

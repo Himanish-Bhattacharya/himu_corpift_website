@@ -19,7 +19,7 @@ export interface Product {
   gallery?: string[];
 }
 
-const productFields = `
+export const productFields = `
   "id": _id,
   name,
   categories,

@@ -8,14 +8,20 @@ import SectionLabel from '@/components/shared/SectionLabel';
 import RevealOnScroll from '@/components/shared/RevealOnScroll';
 import CountUp from '@/components/shared/CountUp';
 import { gsap, useGSAP, prefersReducedMotion } from '@/lib/gsap';
+import { cn } from '@/lib/utils';
+import type { CmsImage, Stat } from '@/data/homepage';
+import Accented from '@/components/shared/Accented';
 
-const stats = [
-  { value: '2022', label: 'Founded' },
-  { value: '500+', label: 'Happy Clients' },
-  { value: '50+',  label: 'Gift Categories' },
-];
+interface AboutTeaserProps {
+  image: CmsImage;
+  heading: string;
+  paragraphs: string[];
+  stats: Stat[];
+  caption: string;
+  captionText: string;
+}
 
-export default function AboutTeaser() {
+export default function AboutTeaser({ image, heading, paragraphs, stats, caption, captionText }: AboutTeaserProps) {
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -54,19 +60,20 @@ export default function AboutTeaser() {
             <div data-about-frame className="relative aspect-[4/5] overflow-hidden rounded-sm bg-bg-alt">
               <div data-about-img className="absolute inset-0 -top-[10%] h-[120%]">
                 <Image
-                  src="/images/hero/slide-2.jpg"
-                  alt="Wrapped gift with brass details beside a green notebook and pen"
+                  src={image.src}
+                  alt={image.alt}
                   fill
                   sizes="(max-width: 1024px) 100vw, 40vw"
                   className="object-cover"
+                  style={image.position ? { objectPosition: image.position } : undefined}
                   loading="lazy"
                 />
               </div>
             </div>
             {/* Offset caption card */}
             <div className="absolute -bottom-6 right-4 lg:-right-10 bg-bg-dark text-bg px-6 py-5 rounded-sm max-w-[220px] shadow-[0_20px_50px_rgba(20,37,30,0.25)]">
-              <p className="font-display italic text-[22px] leading-tight text-accent-light">Made by hand.</p>
-              <p className="text-[12px] font-body text-muted-dark mt-1">Sourced from artisans across Rajasthan.</p>
+              <p className="font-display italic text-[22px] leading-tight text-accent-light">{caption}</p>
+              <p className="text-[12px] font-body text-muted-dark mt-1">{captionText}</p>
             </div>
           </div>
 
@@ -75,28 +82,25 @@ export default function AboutTeaser() {
             <RevealOnScroll>
               <SectionLabel className="block mb-5">Our Story</SectionLabel>
               <h2 className="font-display text-heading-lg md:text-[clamp(36px,4.4vw,60px)] text-text mb-8 leading-[1.05]">
-                Gifting should feel <em className="italic text-accent">personal</em>, not transactional.
+                <Accented text={heading} />
               </h2>
-              <div className="grid sm:grid-cols-2 gap-6 mb-12 max-w-2xl">
-                <p className="text-[15px] text-muted font-body leading-relaxed">
-                  Born in Jaipur — India&apos;s city of craftsmanship — Corpift partners with local artisans and
-                  sustainable suppliers to build hampers that carry the soul of Rajasthan.
-                </p>
-                <p className="text-[15px] text-muted font-body leading-relaxed">
-                  Every piece is thoughtfully chosen, beautifully packaged and branded for you — then delivered
-                  with care, whether it&apos;s ten gifts or ten thousand.
-                </p>
+              <div className={cn('grid gap-6 mb-12 max-w-2xl', paragraphs.length > 1 && 'sm:grid-cols-2')}>
+                {paragraphs.map((para, i) => (
+                  <p key={i} className="text-[15px] text-muted font-body leading-relaxed">
+                    {para}
+                  </p>
+                ))}
               </div>
             </RevealOnScroll>
 
-            <div className="grid grid-cols-3 border-y border-border mb-12">
+            <div className={cn('grid border-y border-border mb-12', ['grid-cols-1', 'grid-cols-2', 'grid-cols-3'][stats.length - 1])}>
               {stats.map((stat, i) => (
-                <div key={stat.label} className={i > 0 ? 'border-l border-border pl-4 sm:pl-8 py-7' : 'py-7 pr-4'}>
+                <div key={stat.label + i} className={i > 0 ? 'border-l border-border pl-4 sm:pl-8 py-7' : 'py-7 pr-4'}>
                   <CountUp
                     value={stat.value}
                     className="block font-display text-[clamp(34px,4.5vw,56px)] text-text leading-none mb-2 tabular-nums"
                   />
-                  <p className="text-[10px] sm:text-[11px] font-medium tracking-[0.14em] uppercase font-body text-muted">
+                  <p className="text-[11px] font-medium tracking-[0.12em] uppercase font-body text-muted">
                     {stat.label}
                   </p>
                 </div>

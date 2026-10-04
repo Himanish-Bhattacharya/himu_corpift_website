@@ -4,13 +4,19 @@ import type { Product } from '@/data/products';
 import SectionLabel from '@/components/shared/SectionLabel';
 import RevealOnScroll from '@/components/shared/RevealOnScroll';
 import ProductCard from '@/components/shop/ProductCard';
+import Accented from '@/components/shared/Accented';
 
-const COUNT = 6;
+interface FeaturedProductsProps {
+  featured: Product[];
+  all: Product[];
+  heading: string;
+}
 
-export default function FeaturedProducts({ featured, all }: { featured: Product[]; all: Product[] }) {
-  // Always show complete rows: top up with other products if fewer than COUNT are featured
+export default function FeaturedProducts({ featured, all, heading }: FeaturedProductsProps) {
+  // Always show complete rows of 3 (between 3 and 9 cards), topping up with other products if needed
+  const count = Math.min(9, Math.max(3, Math.ceil(featured.length / 3) * 3));
   const ids = new Set(featured.map((p) => p.id));
-  const products = [...featured, ...all.filter((p) => !ids.has(p.id))].slice(0, COUNT);
+  const products = [...featured, ...all.filter((p) => !ids.has(p.id))].slice(0, count);
 
   return (
     <section className="bg-bg py-24 md:py-36">
@@ -18,9 +24,8 @@ export default function FeaturedProducts({ featured, all }: { featured: Product[
         <RevealOnScroll className="flex flex-col md:flex-row md:items-end justify-between mb-14 md:mb-16 gap-6">
           <div>
             <SectionLabel className="block mb-5">Featured Gifts</SectionLabel>
-            <h2 className="font-display text-[clamp(36px,4.4vw,60px)] text-text leading-[1.02]">
-              Thoughtfully curated,<br />
-              <em className="italic text-accent">beautifully</em> delivered
+            <h2 className="font-display text-[clamp(36px,4.4vw,60px)] text-text leading-[1.02] max-w-3xl">
+              <Accented text={heading} />
             </h2>
           </div>
           <Link href="/shop" className="group btn-outline inline-flex items-center gap-2 w-fit self-start md:self-auto">
