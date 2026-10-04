@@ -4,7 +4,7 @@ import SectionLabel from '@/components/shared/SectionLabel';
 import RevealOnScroll from '@/components/shared/RevealOnScroll';
 
 const stats = [
-  { value: '2021', label: 'Founded' },
+  { value: '2022', label: 'Founded' },
   { value: '500+', label: 'Happy Clients' },
   { value: '50+',  label: 'Gift Categories' },
 ];

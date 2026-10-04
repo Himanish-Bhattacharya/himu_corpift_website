@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ChevronRight, Package, Hand, Star } from 'lucide-react';
+import { ChevronRight, Package, Hand, Star, ArrowUpRight } from 'lucide-react';
 import SectionLabel from '@/components/shared/SectionLabel';
 import RevealOnScroll from '@/components/shared/RevealOnScroll';
 
@@ -12,7 +12,12 @@ const STATS = [
 ];
 
 const TEAM = [
-  { name: 'Himanish Bhattacharya', role: 'Founder & CEO', image: '/images/HIMU_DP.webp' },
+  {
+    name: 'Himanish Bhattacharya',
+    role: 'Founder & CEO',
+    image: '/images/HIMU_DP.webp',
+    url: 'https://himanishbhattacharya.com',
+  },
 ];
 
 const VALUES = [
@@ -157,32 +162,40 @@ export default function AboutPage() {
       {/* Team */}
       <section className="bg-bg py-28 md:py-36">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <RevealOnScroll className="mb-14">
+          <RevealOnScroll className="mb-14 text-center">
             <SectionLabel className="block mb-4">The Team</SectionLabel>
             <h2 className="font-display text-heading-lg text-text">
               Passionate people, purposeful gifts
             </h2>
           </RevealOnScroll>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-10">
+          <div className="flex flex-wrap justify-center gap-8 md:gap-10">
             {TEAM.map((member, i) => (
-              <RevealOnScroll key={member.name} delay={i * 0.1}>
-                <div>
+              <RevealOnScroll key={member.name} delay={i * 0.1} className="w-full max-w-[340px]">
+                <a
+                  href={member.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block text-center"
+                >
                   <div className="relative aspect-[3/4] rounded-sm overflow-hidden mb-5 bg-bg-alt">
                     <Image
                       src={member.image}
                       alt={member.name}
                       fill
-                      sizes="(max-width: 640px) 100vw, 33vw"
-                      className="object-cover object-top"
+                      sizes="(max-width: 640px) 100vw, 340px"
+                      className="object-cover object-top transition-transform duration-700 ease-custom group-hover:scale-[1.03]"
                       loading="lazy"
                     />
                   </div>
-                  <h3 className="font-display text-heading-sm text-text">{member.name}</h3>
+                  <h3 className="font-display text-heading-sm text-text group-hover:text-accent transition-colors duration-300 inline-flex items-center gap-1.5">
+                    {member.name}
+                    <ArrowUpRight size={18} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </h3>
                   <p className="text-[11px] font-medium tracking-[0.12em] uppercase font-body text-accent mt-1">
                     {member.role}
                   </p>
-                </div>
+                </a>
               </RevealOnScroll>
             ))}
           </div>
